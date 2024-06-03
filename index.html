@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="font-montserrat">
+
+    <div class="weather-app min-h-screen bg-cover bg-center bg-no-repeat relative transition-opacity opacity-100">
+        <div class="container absolute top-0 left-0 w-full h-full flex justify-between items-start flex-col p-4">
+            <div class="flex flex-row">
+                <button id="openModalBtn"
+                    class="bg-white hover:bg-gray-300 text-black font-semibold py-2 mx-4 px-4 rounded-lg shadow-md">Website
+                    details</button>
+                <button id="forecastBtn"
+                    class="bg-white hover:bg-gray-300 text-black font-semibold py-2 mx-4 px-4 rounded-lg shadow-md">Forecast</button>
+            </div>
+
+            <div class="modal1 fixed hidden top-0 bottom-0 left-0 right-0 z-50 overflow-auto bg-gray-900 bg-opacity-80 flex justify-center items-center">
+                <div class="modal1-content max-h-full p-5 mb-5 rounded-lg w-2/3">
+                    <div id="forecast-container bg-blue-500">
+                        <h2 class="text-center text-3xl font-bold text-white mb-4">Weather Forecast for <span id="location"></span></h2>
+                        <div class="flex justify-center mb-4">
+                            <label for="forecast-duration" class="mr-2 text-xl text-white">Select Forecast Duration:</label>
+                            <select id="forecast-duration" class="bg-white text-blue-500 font-semibold py-2 px-4 rounded-lg shadow-md">
+                                <option value="5">5 days</option>
+                                <option value="7">7 days</option>
+                                <option value="10">10 days</option>
+                                <option value="14">14 days</option>
+                            </select>
+                        </div>
+                        <div id="forecast" class="flex flex-row"></div>
+                        <table class="forecast-table w-full bg-blue-500 rounded-lg text-white shadow-lg">
+                            <thead>
+                                <tr>
+                                    <th class="px-2 py-2 text-center">Date</th>
+                                    <th class="px-2 py-2 text-center">Day of Week</th>
+                                    <th class="px-2 py-2 text-center">Temperature (°C)</th>
+                                    <th class="px-2 py-2 text-center">Weather Icon</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+                        <span class="close1 absolute top-0 right-0 mt-4 mr-4 text-2xl cursor-pointer">&times;</span>
+                    </div>
+                </div>
+            </div>
+            
+
+            <div
+                class="modal fixed hidden inset-0 z-50 py-5 overflow-auto bg-gray-900 bg-opacity-80 flex justify-center items-center">
+                <div class="modal-content py-5 bg-yellow-100 p-8 rounded-lg w-1/3">
+                    <span class="close absolute top-0 right-0 mt-4 mr-4 text-2xl cursor-pointer">&times;</span>
+                    <h2 class="text-2xl font-bold mt-8 text-black text-center">Visitor Counts</h2>
+                    <h1 class="text-lg font-bold my-2 py-3 text-black text-center">Unique visitors count during 60
+                        minutes: <span class="visitors"></span></h1>
+                    <div class="table-container">
+                        <table class="table-auto w-full">
+                            <thead>
+                                <tr>
+                                    <th class="px-2 py-2 bg-green-200 text-green-800">Time Interval</th>
+                                    <th class="px-2 py-2 bg-yellow-200 text-yellow-800">Visitor Count</th>
+                                </tr>
+                            </thead>
+                            <tbody class="visitors-table">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <select id="countryFilter"
+                        class="block w-full px-4 py-2 my-4 bg-green-200 text-green-800 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm">
+                        <option value="">All Countries</option>
+                    </select>
+
+                    <div class="table-container1">
+                        <table class="table-auto w-full mb-6">
+                            <thead>
+                                <tr>
+                                    <th class="px-2 py-2 bg-green-200 text-green-800 hover:underline cursor-pointer"
+                                        id="city-header">Destination</th>
+                                    <th class="px-2 py-2 bg-yellow-200 text-yellow-800">Country</th>
+                                    <th class="px-2 py-2 bg-blue-200 text-blue-800 ">Count</th>
+                                </tr>
+                            </thead>
+                            <tbody class="destination-table">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="bg-gray-900 ml-4 flex flex-col mt-2 p-5 bg-opacity-50">
+                <div class="flex flex-row">
+                    <span class="country text-5xl text-gray-200"></span>
+                    <img src="" class="flag ml-5">
+                </div>
+                <span class="capital mt-4 text-2xl text-gray-200 "></span>
+                <div class="flex flex-row mt-2">
+                    <span class="value text-base mr-2 text-gray-400"></span>
+                    <h1 class="valueText text-base text-gray-400 mr-2">EUR in 1</h1>
+                    <span class="currency text-base text-gray-200"></span>
+                </div>
+
+            </div>
+            <div class="flex bg-gray-900 bg-opacity-40 p-5 items-center my-10 mx-4 rounded-lg">
+                <h1 class="temp text-8xl text-gray-200 mr-4">16&#176;</h1>
+                <div class="city-time">
+                    <h1 class="name text-4xl text-gray-200 mb-2">London</h1>
+                    <small>
+                        <span class="date text-base text-gray-200">Monday Sep 19</span>
+                    </small>
+                </div>
+                <div class="weather mx-7 flex-col flex items-center">
+                    <img src="./icons/day/113.png" class="icon w-10 h-10 mr-2" alt="weather icon" />
+                    <span class="condition text-xl shadow-lg text-gray-200">Cloudy</span>
+                </div>
+            </div>
+        </div>
+        <div
+            class="panel absolute top-0 right-0 w-2/5 h-full bg-opacity-50 bg-white shadow-lg backdrop-blur-lg border border-white z-10 p-8 overflow-y-auto">
+            <form id="locationInput" class="mb-8">
+                <input type="text"
+                    class="search border-b border-gray-900 bg-transparent py-2 pr-10 text-gray-900 text-lg w-full placeholder-gray-900 focus:outline-none"
+                    placeholder="Search for a city" />
+                <button type="submit"
+                    class="submit absolute top-0 right-0 py-2 px-4 bg-orange-500 text-gray-900 text-lg cursor-pointer transition-colors duration-300 hover:bg-white hover:text-black">
+                    <i class="fas fa-search"></i>
+                </button>
+                <div id="error-message" class="text-gray-100 text-lg">
+                </div>
+
+            </form>
+            <h4 class="mb-3 mt-8 text-xl text-gray-900 font-bold">Some of the cities:</h4>
+            <ul class="cities mb-8">
+                <li class="city cursor-pointer text-xl text-gray-900 py-2 transition-colors hover:text-blue-900">London
+                </li>
+                <li class="city cursor-pointer text-xl text-gray-900 py-2 transition-colors hover:text-red-900">New York
+                </li>
+                <li class="city cursor-pointer text-xl text-gray-900 py-2 transition-colors hover:text-green-900">Paris
+                </li>
+                <li class="city cursor-pointer text-xl text-gray-900 py-2 transition-colors hover:text-blue-900">Tokyo
+                </li>
+                <li class="city cursor-pointer text-xl text-gray-900 py-2 transition-colors hover:text-yellow-900">
+                    Sydney</li>
+                <li class="city cursor-pointer text-xl text-gray-900 py-2 transition-colors hover:text-green-900">Kyiv
+                </li>
+                <li class="city cursor-pointer text-xl text-gray-900 py-2 transition-colors hover:text-blue-900">
+                    Budapest</li>
+            </ul>
+
+
+            <div class="border-t border-gray-900 my-6"></div>
+
+            <ul class="details text-lg text-gray-900">
+                <h4 class="mb-5 mt-8 text-xl font-bold">Weather Details</h4>
+                <li class="flex justify-between items-center mb-4">
+                    <span class="text-gray-900">Cloudy</span>
+                    <span class="cloud">89%</span>
+                </li>
+                <li class="flex justify-between items-center mb-4">
+                    <span class="text-gray-900">Humidity</span>
+                    <span class="humidity">64%</span>
+                </li>
+                <li class="flex justify-between items-center">
+                    <span class="text-gray-900">Wind</span>
+                    <span class="wind">8km/h</span>
+                </li>
+            </ul>
+
+        </div>
+
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
